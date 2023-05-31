@@ -2,9 +2,10 @@ import React, { useState, useRef } from "react";
 import cv from "@techstark/opencv-js";
 import { Tensor, InferenceSession } from "onnxruntime-web";
 import Loader from "./components/loader";
-import { detectImage } from "./utils/detect";
+import {detectImage, detectVideo} from "./utils/detect";
 import { download } from "./utils/download";
 import "./style/App.css";
+import ButtonHandler from "./components/btn-handler";
 
 const App = () => {
   const [session, setSession] = useState(null);
@@ -12,10 +13,15 @@ const App = () => {
   const [image, setImage] = useState(null);
   const inputImage = useRef(null);
   const imageRef = useRef(null);
+  const cameraRef = useRef(null);
   const canvasRef = useRef(null);
 
+    const [model, setModel] = useState({
+        net: null,
+        inputShape: [1, 0, 0, 3],
+    });
   // Configs
-  const modelName = "yolov8n.onnx";
+  const modelName = "pcard_230.onnx";
   const modelInputShape = [1, 3, 640, 640];
   const topk = 100;
   const iouThreshold = 0.45;
@@ -133,6 +139,43 @@ const App = () => {
           </button>
         )}
       </div>
+
+        <div className="content">
+            <img
+                src="#"
+                ref={imageRef}
+                onLoad={() => detectImage(
+                    imageRef.current,
+                    canvasRef.current,
+                    session,
+                    topk,
+                    iouThreshold,
+                    scoreThreshold,
+                    modelInputShape
+                )}
+            />
+            <video
+                autoPlay
+                muted
+                ref={cameraRef}
+                onPlay={() => detectVideo(
+                    cameraRef.current,
+                    canvasRef.current,
+                    session,
+                    topk,
+                    iouThreshold,
+                    scoreThreshold,
+                    modelInputShape
+                )}
+            />
+            <canvas
+                id="canvas"
+                width={modelInputShape[2]}
+                height={modelInputShape[3]}
+                ref={canvasRef}
+            />
+        </div>
+        <ButtonHandler imageRef={imageRef} cameraRef={cameraRef} />
     </div>
   );
 };
