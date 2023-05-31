@@ -7,6 +7,7 @@ const ButtonHandler = ({ imageRef, cameraRef }) => {
   const inputImageRef = useRef(null); // video input reference
   const webcam = new Webcam(); // webcam handler
 
+    // cameraRef.current.style.display = "none";
   // closing image
   const closeImage = () => {
     const url = imageRef.current.src;
@@ -17,6 +18,7 @@ const ButtonHandler = ({ imageRef, cameraRef }) => {
     inputImageRef.current.value = ""; // reset input image
     imageRef.current.style.display = "none"; // hide image
   };
+  // closeImage()
 
   return (
     <div className="btn-container">

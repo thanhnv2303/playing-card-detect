@@ -25,8 +25,8 @@ export const detectImage = async (
     }
 ) => {
     const [modelWidth, modelHeight] = inputShape.slice(2);
-    // const [input, xRatio, yRatio] = preprocessing(image, modelWidth, modelHeight);
-    const [input, xRatio, yRatio] = preprocessVideo(image, modelWidth, modelHeight,canvas);
+    const [input, xRatio, yRatio] = preprocessing(image, modelWidth, modelHeight);
+    // const [input, xRatio, yRatio] = preprocessVideo(image, modelWidth, modelHeight,canvas);
 
 
     const tensor = new Tensor("float32", input.data32F, inputShape); // to ort.Tensor
@@ -145,6 +145,29 @@ function captureVideo(video, scaleFactor) {
     return canvas;
 }
 
+export const detectFrame = async (
+    vidSource,
+    canvas,
+    session,
+    topk,
+    iouThreshold,
+    scoreThreshold,
+    inputShape,
+    callback = () => {
+    }
+) => {
+    const imageSource = captureVideo(vidSource);
+    await detectImage(
+        imageSource,
+        canvas,
+        session,
+        topk,
+        iouThreshold,
+        scoreThreshold,
+        inputShape,
+        callback)
+}
+
 export const detectVideo = (vidSource,
                             canvasRef,
                             session,
@@ -162,7 +185,7 @@ export const detectVideo = (vidSource,
             return; // handle if source is closed
         }
 
-        detectImage(
+        detectFrame(
             vidSource,
             canvasRef,
             session,

@@ -92,90 +92,23 @@ const App = () => {
             );
           }}
         />
-        <canvas
-          id="canvas"
-          width={modelInputShape[2]}
-          height={modelInputShape[3]}
-          ref={canvasRef}
-        />
+          <video
+              autoPlay
+              muted
+              ref={cameraRef}
+              onPlay={() => detectVideo(
+                  cameraRef.current,
+                  canvasRef.current,
+                  session,
+                  topk,
+                  iouThreshold,
+                  scoreThreshold,
+                  modelInputShape
+              )}
+          />
+        <canvas id="canvas" width={modelInputShape[2]} height={modelInputShape[3]} ref={canvasRef} />
       </div>
-
-      <input
-        type="file"
-        ref={inputImage}
-        accept="image/*"
-        style={{ display: "none" }}
-        onChange={(e) => {
-          // handle next image to detect
-          if (image) {
-            URL.revokeObjectURL(image);
-            setImage(null);
-          }
-
-          const url = URL.createObjectURL(e.target.files[0]); // create image url
-          imageRef.current.src = url; // set image source
-          setImage(url);
-        }}
-      />
-      <div className="btn-container">
-        <button
-          onClick={() => {
-            inputImage.current.click();
-          }}
-        >
-          Open local image
-        </button>
-        {image && (
-          /* show close btn when there is image */
-          <button
-            onClick={() => {
-              inputImage.current.value = "";
-              imageRef.current.src = "#";
-              URL.revokeObjectURL(image);
-              setImage(null);
-            }}
-          >
-            Close image
-          </button>
-        )}
-      </div>
-
-        <div className="content">
-            <img
-                src="#"
-                ref={imageRef}
-                onLoad={() => detectImage(
-                    imageRef.current,
-                    canvasRef.current,
-                    session,
-                    topk,
-                    iouThreshold,
-                    scoreThreshold,
-                    modelInputShape
-                )}
-            />
-            <video
-                autoPlay
-                muted
-                ref={cameraRef}
-                onPlay={() => detectVideo(
-                    cameraRef.current,
-                    canvasRef.current,
-                    session,
-                    topk,
-                    iouThreshold,
-                    scoreThreshold,
-                    modelInputShape
-                )}
-            />
-            <canvas
-                id="canvas"
-                width={modelInputShape[2]}
-                height={modelInputShape[3]}
-                ref={canvasRef}
-            />
-        </div>
-        <ButtonHandler imageRef={imageRef} cameraRef={cameraRef} />
+      <ButtonHandler imageRef={imageRef} cameraRef={cameraRef} />
     </div>
   );
 };
