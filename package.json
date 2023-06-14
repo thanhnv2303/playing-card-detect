@@ -1,10 +1,14 @@
 {
   "name": "yolov8-onnxruntime-web",
-  "homepage": "https://hyuto.github.io/yolov8-onnxruntime-web/",
+  "main": "public/electron.js",
+  "homepage": "./",
   "version": "0.1.0",
   "dependencies": {
+    "@charliewilco/gluejar": "^1.0.0",
+    "@electron/remote": "^2.0.10",
     "@techstark/opencv-js": "4.5.5-release.2",
     "@tensorflow/tfjs": "^4.6.0",
+    "electron-is-dev": "^2.0.0",
     "onnxruntime-web": "^1.13.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -13,7 +17,11 @@
   "scripts": {
     "start": "craco start",
     "build": "craco build",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "dev": "concurrently -k \"BROWSER=none yarn start\" \"yarn:electron\"",
+    "electron": "electron ."
   },
   "eslintConfig": {
     "extends": [
@@ -47,7 +55,10 @@
   },
   "devDependencies": {
     "@craco/craco": "^7.0.0",
+    "concurrently": "^8.2.0",
     "copy-webpack-plugin": "^11.0.0",
-    "gh-pages": "^4.0.0"
+    "electron": "^25.1.0",
+    "gh-pages": "^4.0.0",
+    "wait-on": "^7.0.1"
   }
 }

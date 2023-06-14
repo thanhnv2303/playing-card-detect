@@ -70,3 +70,38 @@ button:hover {
   background-color: white;
   border: 2px solid black;
 }
+
+.button {
+  position: relative;
+  width: calc(0.8 * var(--width));
+  height: calc(0.7 * var(--height));
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  overflow: hidden;
+  margin: 0 0.8rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2), 0 3px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s cubic-bezier(0, 0.22, 0.3, 1);
+  border: none;
+}
+.button:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.1);
+}
+.button span {
+  color: #fff;
+  font-size: 1rem;
+  z-index: 10;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  border: none;
+}
+.button._1 {
+  background: #2980b9;
+}
